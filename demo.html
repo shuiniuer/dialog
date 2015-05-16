@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;  charset=UTF-8" />
+    <title>纯前端实现图片上传本地预览</title>
+    <script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="dialog.js"></script>
+  </head>
+  <body>
+    <div style="width:1200px;height:900px;background:#cc0;"></div>
+    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+    <div id="dialog" style="height:100px;width:240px;background:#c00;">
+    </div>
+  </body>
+  <script type="text/javascript">
+    (function($){
+      $(function(){
+        var dialog = $.dialog({
+              selector:'#dialog',
+              minWidth:1200
+            });
+        dialog.show();
+      });
+    })(jQuery);
+  </script>
+</html>
