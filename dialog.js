@@ -5,28 +5,29 @@
             'position': 'absolute',
             'z-index': config.zindex
         });
-
         this.config = config;
-
         this.show = function(){
             var that = this,
-                config = that.config;
+                config = that.config,
+                win = $(window);
             this.modal(config.mask,config.minWidth);
             this.center(config.elm);
-
-            $(window).on('resize.'+config.id, function(event) {
+            win.on('resize.'+config.id, function(event) {
                 that.modal(config.mask,config.minWidth);
                 that.center(config.elm);
             });
+            win.on('scroll.'+config.id, function(event) {
+                that.center(config.elm);
+            });
         };
-
         this.hide = function(){
-            var config = this.config;
+            var config = this.config,
+                win = $(window);
             config.mask.hide(0);
             config.elm.hide(0);
-            $(window).off('resize.'+config.id);
+            win.off('resize.'+config.id);
+            win.off('scroll.'+config.id);
         };
-
         this.destroy = function(){
             var config = this.config;
             if(config.htmlFlag){
@@ -48,14 +49,17 @@
         elm.show(0);
     };
 
-    Dialog.prototype.center = function(elm){
+    Dialog.prototype.center = function(elm,minWidth){
         var win = $(window),
             height = elm.height(),
             width = elm.width(),
-            winWidth = $(document.body).outerWidth(true),
+            winWidth = win.width(),
             winHeight = win.height(),
             scrollHeight = win.scrollTop();
 
+        if(typeof minWidth !== 'undefined' && minWidth>winWidth){
+            winWidth = minWidth;
+        }
         var centerLeft = (winWidth - width)/2,
             centerTop = (winHeight - height)/2 + scrollHeight;
 
@@ -95,5 +99,4 @@
     dialog.prototype.init = Dialog;
 
     $.dialog ? $.dialog : $.dialog = dialog;
-
 })(jQuery);
