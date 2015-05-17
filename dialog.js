@@ -57,7 +57,7 @@
             winHeight = win.height(),
             scrollHeight = win.scrollTop();
 
-        if(typeof minWidth !== 'undefined' && minWidth>winWidth){
+        if(typeof minWidth !== 'undefined' && minWidth > winWidth){
             winWidth = minWidth;
         }
         var centerLeft = (winWidth - width)/2,
@@ -84,7 +84,6 @@
         },0);
 
         config.id = 'dialog'+new Date().getTime();
-        config.mask = mask;
 
         if(typeof config.selector !== 'undefined'){
             elm = $(config.selector);
@@ -92,7 +91,12 @@
             elm = $(config.html);
             config.htmlFlag = true;
         }
-        config.elm = elm;
+
+        var dialogConfig = {
+            elm: elm,
+            id: config.id,
+            mask: mask
+        }
         return new dialog.prototype.init(config);
     };
 
