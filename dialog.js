@@ -2,7 +2,7 @@
     function Dialog(config){
         config.elm.appendTo('body');
         config.elm.css({
-            'position': 'absolute',
+            'position': 'fixed',
             'z-index': config.zindex
         });
         this.config = config;
@@ -41,7 +41,7 @@
         var doc = $(document),
             height = doc.height(),
             width = $(window).width();
-        if(typeof minWidth !== 'undefined' && minWidth>width){
+        if(typeof minWidth !== 'undefined' && minWidth > width){
             width = minWidth;
         }
         elm.width(width);
@@ -54,14 +54,13 @@
             height = elm.height(),
             width = elm.width(),
             winWidth = win.width(),
-            winHeight = win.height(),
-            scrollHeight = win.scrollTop();
+            winHeight = win.height();
 
         if(typeof minWidth !== 'undefined' && minWidth > winWidth){
             winWidth = minWidth;
         }
         var centerLeft = (winWidth - width)/2,
-            centerTop = (winHeight - height)/2 + scrollHeight;
+            centerTop = (winHeight - height)/2;
 
         elm.css({
             'top': centerTop+'px',
@@ -95,9 +94,10 @@
         var dialogConfig = {
             elm: elm,
             id: config.id,
-            mask: mask
+            mask: mask,
+            minWidth: config.minWidth
         }
-        return new dialog.prototype.init(config);
+        return new dialog.prototype.init(dialogConfig);
     };
 
     dialog.prototype.init = Dialog;
