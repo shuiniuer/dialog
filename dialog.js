@@ -1,11 +1,25 @@
 !(function($){
     function Dialog(config){
-        config.elm.appendTo('body');
-        config.elm.css({
+        var buttons = config.buttons,
+            elm = config.elm,
+            that = this;
+
+        elm.appendTo('body');
+        elm.css({
             'position': 'fixed',
             'z-index': config.zindex
         });
+        
+        if (typeof buttons !== 'undefined') {
+            $.each(buttons, function(index, val) {
+                elm.on(val.event, val.selector, function(event) {
+                    val.callback.call(that,val.paramObj,event);
+                });
+            });
+        };
+
         this.config = config;
+
         this.show = function(){
             var that = this,
                 config = that.config,
@@ -16,18 +30,32 @@
                 that.modal(config.mask,config.minWidth);
                 that.center(config.elm);
             });
-            win.on('scroll.'+config.id, function(event) {
-                that.center(config.elm);
-            });
+            
+            if(typeof config.timers !== 'undefined'){
+                var timersId = [];
+                $.each(config.timers, function(index, val) {
+                    timersId.push(setTimeout(function(){
+                        val.callback.call(that,val.paramObj);
+                    },val.time));
+                });
+                config.timersId = timersId;
+            }
         };
+
         this.hide = function(){
             var config = this.config,
-                win = $(window);
+                win = $(window),
+                timersId = config.timersId;
             config.mask.hide(0);
             config.elm.hide(0);
             win.off('resize.'+config.id);
-            win.off('scroll.'+config.id);
+            if(typeof timersId !== 'undefined'){
+                $.each(timersId, function(index, val) {
+                    clearInterval(val);
+                });
+            }
         };
+
         this.destroy = function(){
             var config = this.config;
             if(config.htmlFlag){
@@ -95,7 +123,9 @@
             elm: elm,
             id: config.id,
             mask: mask,
-            minWidth: config.minWidth
+            minWidth: config.minWidth,
+            timers: config.timers,
+            buttons:config.buttons
         }
         return new dialog.prototype.init(dialogConfig);
     };

@@ -2,7 +2,7 @@
 <html lang="zh-CN">
   <head>
     <meta http-equiv="Content-Type" content="text/html;  charset=UTF-8" />
-    <title>纯前端实现图片上传本地预览</title>
+    <title>dialog</title>
     <script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
     <script type="text/javascript" src="dialog.js"></script>
   </head>
@@ -12,6 +12,7 @@
     <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
     <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
     <div id="dialog" style="height:100px;width:240px;background:#c00;">
+      <div class="haha">haha</div>
     </div>
   </body>
   <script type="text/javascript">
@@ -19,9 +20,34 @@
       $(function(){
         var dialog = $.dialog({
               selector:'#dialog',
-              minWidth:1200
+              minWidth:1200,
+              timers:[
+                {
+                  callback: function(paramObj){
+                    alert(paramObj.nimei);
+                  },
+                  time: 1000,
+                  paramObj:{
+                    nimei: 'nimei'
+                  }
+                }
+              ],
+              buttons:[
+                {
+                  selector: '.haha',
+                  event:'click',
+                  callback: function(paramObj,event){
+                    alert(paramObj.haha);
+                    this.hide();
+                  },
+                  paramObj:{
+                      haha: 'haha'
+                  }
+                }
+              ]
             });
         dialog.show();
+        console.log(dialog);
       });
     })(jQuery);
   </script>
